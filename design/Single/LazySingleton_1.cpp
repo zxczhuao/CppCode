@@ -1,3 +1,11 @@
+/*
+ * @Author: zxczhuao
+ * @Date: 2023-03-24 21:50:16
+ * @LastEditTime: 2023-03-25 13:16:20
+ * @FilePath: /CppCode/design/Single/LazySingleton_1.cpp
+ * @Description: 
+ * 
+ */
 #include <mutex>
 
 // 存在内存泄漏的问题
@@ -73,11 +81,11 @@ private:
     Singleton_3(){};
     ~Singleton_3(){};
     Singleton_3(const Singleton_3&) = delete;
-    Singleton_3* operator=(const Singleton_3&) = delete;
+    Singleton_3& operator=(const Singleton_3&) = delete;
     static std::mutex m_Mutex;
     static Singleton_3* instance;
 };
-
+std::mutex Singleton_3::m_Mutex;
 Singleton_3 *Singleton_3::instance = nullptr;
 
 
@@ -85,13 +93,13 @@ Singleton_3 *Singleton_3::instance = nullptr;
 class Singleton_4
 {
 public:
-    static Singleton_4& getInstance(){
+    static Singleton_4* getInstance(){
         static Singleton_4 instance;
-        return instance;
+        return &instance;
     }
 private:
     Singleton_4(){};
     ~Singleton_4(){};
     Singleton_4(const Singleton_4&) = delete;
-    Singleton_4* operator=(const Singleton_4&) = delete;
+    Singleton_4& operator=(const Singleton_4&) = delete;
 };
