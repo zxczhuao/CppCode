@@ -1,46 +1,30 @@
-/*
- * @Author: zxczhuao
- * @Date: 2023-03-24 21:51:26
- * @LastEditTime: 2023-04-29 23:15:39
- * @FilePath: /CppCode/ThreadPool/ThreadPool.h
- * @Description: 
- * 
- */
-/*
- * @Author: zxczhuao
- * @Date: 2023-03-24 21:51:26
- * @LastEditTime: 2023-04-29 23:13:28
- * @FilePath: /CppCode/ThreadPool/ThreadPool.h
- * @Description: 
- * 
- */
 #pragma once
 
 #include <mutex>
 #include <condition_variable>
 #include <thread>
+#include <vector>
 #include <queue>
 #include <functional>
-#include <vector>
 
 class ThreadPool{
 public:
-    ThreadPool(size_t threadCount = 8): isClosed(false) {
+    // 构造函数
+    ThreadPool(size_t threadCount = 8): isClosed(false){
         for(size_t i = 0; i < threadCount; ++i){
             threads.emplace_back(std::thread([this](){
-                while(true){
-                    std::function<void()> task;
-                    {
-                        std::unique_lock<std::mutex> lock(mtx);
-                        cond.wait(lock, [this](){
-                            return isClosed || !tasks.empty();
-                        });
-                        if(isClosed && tasks.empty()) return;
-                        task = tasks.front();
-                        tasks.pop();
-                    }
-                    task();
+                std::function<void()> task;
+                {
+                    //从任务队列中获取任务，如果没有任务则阻塞
+                    std::unique_lock<std::mutex> lock(mtx);
+                    cond.wait(lock, [this](){
+                        return isClosed || !tasks.empty();
+                    });
+                    if(isClosed && tasks.empty()) return;
+                    task = tasks.front();
+                    tasks.pop();
                 }
+                task();
             }));
         }
     }
@@ -65,7 +49,6 @@ public:
         }
         cond.notify_one();
     }
-
 private:
     std::mutex mtx;
     std::condition_variable cond;
