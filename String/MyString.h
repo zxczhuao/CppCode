@@ -1,3 +1,11 @@
+/*
+ * @Author: zxczhuao
+ * @Date: 2023-06-10 10:06:34
+ * @LastEditTime: 2023-06-10 10:43:58
+ * @FilePath: /CppCode/String/MyString.h
+ * @Description: 
+ * 
+ */
 #include <cstring>
 #include <iostream>
 using namespace std;

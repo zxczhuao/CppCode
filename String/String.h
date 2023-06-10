@@ -1,3 +1,11 @@
+/*
+ * @Author: zxczhuao
+ * @Date: 2023-03-24 21:50:16
+ * @LastEditTime: 2023-06-10 10:51:31
+ * @FilePath: /CppCode/String/String.h
+ * @Description: 
+ * 
+ */
 #include <cassert>
 #include <iostream>
 #include <cstring>
